@@ -26,6 +26,8 @@ class wpctweetsWidget extends WP_Widget {
 		extract( $args );
 		$username=$instance['twitterUsername']; $limit=$instance['tweetCount'];
 		if(!is_numeric($limit)){$limit = 100;}
+		if($instance['ImageWidth']) $imageWidth='width="25" ';
+		if($instance['ImageHeight']) $imageheight='height="25" ';
 		$tweetFile	=	"http://search.twitter.com/search.atom?q=from:" . $username . "&rpp=" . $limit . "";
 		$xml = simplexml_load_file($tweetFile);
 	?>	
@@ -35,9 +37,12 @@ class wpctweetsWidget extends WP_Widget {
 					$attr = $xml->entry->link[1]->attributes();
 			?>	
 				<tr>
-					<?php if($instance['showImage']) {?><td><img src="<?php echo $attr['href']; ?>" /></td><?php } ?>
-					<td style=" font-size:12px;">
-					<?php 	echo  $xml->entry[$i]->content;	?>
+					<?php if($instance['showImage']) {?>
+						<td width="36"><img <?php echo $imageheight ?> <?php echo $imageWidth ?> src="<?php echo $attr['href']; ?>" /></td>
+					<?php } ?>
+					<td width="2"></td>
+					<td width="17" valign="top" style=" font-size:12px;">
+						<?php echo  $xml->entry[$i]->content;	?>			
 					</td>
 				</tr>
 			<?php } ?>	
@@ -53,6 +58,8 @@ class wpctweetsWidget extends WP_Widget {
 		$instance['twitterUsername'] = strip_tags( $new_instance['twitterUsername'] );
 		$instance['tweetCount'] 	=  $new_instance['tweetCount'] ;
 		$instance['showImage']	 	=  $new_instance['showImage'] ;
+		$instance['ImageWidth']	 	=  $new_instance['ImageWidth'] ;
+		$instance['ImageHeight']	=  $new_instance['ImageHeight'] ;
 		return $instance;
 	}
 
@@ -71,6 +78,12 @@ class wpctweetsWidget extends WP_Widget {
 		<p>
 			<label for="<?php echo $this->get_field_id( 'showImage' ); ?>"><?php _e('Show Image', 'wpcclass'); ?></label>
 			<input type="checkbox" value="1" id="<?php echo $this->get_field_id( 'showImage' ); ?>" name="<?php echo $this->get_field_name( 'showImage' ); ?>" <?php if($instance['showImage']) echo 'checked="checked"'; ?>   />
+		</p>
+		<p>
+			<label for="<?php echo $this->get_field_id( 'ImageWidth' ); ?>"><?php _e('Image Width', 'wpcclass'); ?></label>
+			<input id="<?php echo $this->get_field_id( 'ImageWidth' ); ?>" name="<?php echo $this->get_field_name( 'ImageWidth' ); ?>" value="<?php echo $instance['ImageHeight']; ?>" style="width:20%; border:1px solid #ccc" />
+			<label for="<?php echo $this->get_field_id( 'ImageHeight' ); ?>"><?php _e('Height', 'wpcclass'); ?></label>
+			<input id="<?php echo $this->get_field_id( 'ImageHeight' ); ?>" name="<?php echo $this->get_field_name( 'ImageHeight' ); ?>" value="<?php echo $instance['ImageHeight']; ?>" style="width:20%; border:1px solid #ccc" />
 		</p>
 	<?php
 	}
