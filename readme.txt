@@ -14,9 +14,11 @@ It can be used to list latest tweets and the username and  output can be managed
 PHPCodez Tweets list latest tweets and the username and output can be managed from admin side
 
 Advatages
-======
+
 1) We can restrict the number tweets
+
 2) We can set the twitter user name from admin panel
+
 3) We can show/block images
 
 == Installation ==
